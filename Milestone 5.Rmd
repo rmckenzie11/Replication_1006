@@ -1,0 +1,81 @@
+---
+title: "Milestone 5"
+author: "Robert McKenzie"
+date: "3/27/2020"
+header-includes:
+  - \usepackage{epstopdf}
+output: pdf_document
+
+bibliography: "bib4.bib"
+biblio-style: "apalike"
+link-citations: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(foreign)
+library(tidyverse)
+library(kableExtra)
+```
+
+My paper is by Ernesto Calvo and Jonathan Rodden, based on unfinished research about the spatial organization of elections^[Gudgin and Taylor, 1979]. Their goal was to develop a model that would establish a relationship between a party's territorial distribution and the number of seats that party would win in a first-past-the-post election. They then use that model to evaluate UK elections over the last 60 years, and deonstrate how the shift in the Liberal Party from a geographically concentrated party to a geographically dispersed party affected their election outcomes. The main result of their model is that majoritarian biases increase as the number of parties contesting an election goes up, that small parties are hurt when their vote is dispersed, and that large parties are hurt when their vote is concentrated. They ran their analyses using a program called WinBugs, which builds models off of simulated data using a Monte Carlo method, but I plan on rebuilding their model using rstanarm, and seeing if the model ends up being substantially different. 
+
+```{r, fig.cap = "Data and Graph from Calvo and Rodden(2014)", echo = F}
+data <- read.dta("Uk_postwar_with three parties.dta")
+dataElec <- split(data, data$year, drop = FALSE)
+
+sparty1 <- sort(dataElec[[1]]$votesc/dataElec[[1]]$total)
+sparty2 <- sort(dataElec[[16]]$votesc/dataElec[[16]]$total)
+xout <- (0:1000)/1000
+alpha1 <- seq(along=sparty1)/length(sparty1)
+galpha1 <- cumsum(sparty1)/sum(sparty1)
+fn1 <- approx(x=alpha1,y=galpha1,xout=xout)
+plot(x = alpha1, y = galpha1, type = "l", xlim=c(0,1.0), xlab = "Proportion of Total Votes", ylab = "Proportion of Seats", ylim=c(0,1.0), main = "UK Conservative Party Election Outcomes \n under Different Geographic Conditions")
+
+alpha2 <- seq(along=sparty2)/length(sparty2)
+galpha2 <- cumsum(sparty2)/sum(sparty2)
+fn1 <- approx(x=alpha2,y=galpha2,xout=xout)
+lines(x = alpha2, y = galpha2, lty = 2)
+abline(0,1, lty=6)
+legend(x=c(0,0),y=c(1.03,1.03),cex=0.8, bty="n", legend=c("Conservatives, 1950: GINI 0.16","Conservatives, 2010: GINI 0.23", "Perfectly Dispersed"), lty=c(1,2,6), col=c(1,1,1))
+arrows(.4, .28, .42, .25, col= 4,cex=.5,length=.1)
+```
+
+## Appendix ##
+
+#Original Table #
+![original table](table-5.png)
+#My Table #
+```{r table, echo = F}
+
+x <- data %>%
+  select(Year = year,total,newothers,labor,conservatives,liberals)
+
+x <- x %>%
+  group_by(Year) %>%
+  summarize(Conservatives = weighted.mean(conservatives, total), Labor = weighted.mean(labor, total), Liberals = weighted.mean(liberals,total), Others =sum(newothers)/sum(total))
+
+kable(x, digits = 3)
+
+x2 <- data %>%
+  select(Year = year,total,newothers,votesl,votess,votesc) %>%
+  mutate(n = row_number()) %>%
+  group_by(n) %>%
+  mutate(winner = case_when((max(votesl,votesc,votess,newothers) == max(votesc)) == TRUE ~ "Conservatives",
+                            (max(votesl,votesc,votess,newothers) == max(votess)) == TRUE ~ "Labor",
+                            (max(votesl,votesc,votess,newothers) == max(votesl)) == TRUE ~ "Liberals",
+                            (max(votesl,votesc,votess,newothers) == max(newothers)) == TRUE ~ "Others")) %>%
+  group_by(Year) %>% 
+  count(winner) %>%
+  pivot_wider(names_from = winner,values_from = n)
+                              
+x2[is.na(x2)] <- 0      
+
+kable(x2)
+```
+
+Repo Location avaiable below.^[All analysis for this paper is available [here.](https://github.com/rmckenzie11/Replication_1006)]
+
+---
+nocite: '@*'
+...
