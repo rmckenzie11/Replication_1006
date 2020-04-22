@@ -1,0 +1,46 @@
+---
+title: "Milestone 4"
+author: "Robert McKenzie"
+date: "2/27/2020"
+output: pdf_document
+
+bibliography: "bib4.bib"
+biblio-style: "apalike"
+link-citations: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(gt)
+library(kableExtra)
+library(haven)
+library(rstanarm)
+library(xtable)
+```
+## Table using GT ##
+```{r, echo = T}
+
+dat <- read_dta("Uk_postwar_with three parties.dta") %>%
+  select(year, seatname, labor, conservatives, liberals)
+dat <- slice(dat,5000:5020)
+gt(dat)
+
+x <- rnorm(100,1,10)
+y <- rpois(100,10)
+
+fit <- lm(x ~ y)
+
+fit.table <- xtable(fit)
+kable(fit.table, caption = "Regression table")
+```
+
+My paper is by Ernesto Calvo and Jonathan Rodden, based on unfinished research about the spatial organization of elections^[Gudgin and Taylor, 1979].
+For more details, see my [Github Repository](https://github.com/rmckenzie11/Replication_1006.git).
+
+
+## References ##
+
+---
+nocite: '@*'
+...

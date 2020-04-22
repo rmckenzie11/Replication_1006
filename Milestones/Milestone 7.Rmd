@@ -1,0 +1,24 @@
+---
+title: "Milestone 6.5"
+author: "Robert McKenzie"
+date: "4/14/2020"
+output: bookdown::pdf_document2
+
+bibliography: "bib4.bib"
+biblio-style: "apalike"
+link-citations: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Abstract
+
+I chose to replicate "The Achilles Heel of Plurality Systems: Geography and Representation in Multi-Party Democracies", a paper by Ernesto Calvo and Jonathan Rodden, based on unfinished research about the spatial organization of elections^[Gudgin and Taylor, 1979]. Their goal was to develop a model that would establish a relationship between a party's territorial distribution of support it's seat-vote curve in multiparty systems. Using Monte Carlo methods, they derive that linkage and then test the model on UK election data from the 1950s to today. The model, given the territorial distribution of different parties, predicts with a high degree of accuracy the expected biases that will be introduced by voting in many small territorial pools as opposed to all at once. The main result of their model is that majoritarian biases increase as the number of parties contesting an election goes up, that small parties are hurt when their vote is dispersed, and that large parties are hurt when their vote is concentrated. They also drew some specific conclusions about the UK elections: that Labour suffers fewer losses when they do poorly and wins more seats when they do well than their proportion of total votes, that the Conservatives have a consistent seat premium that comes from being large and geographically dispersed, and that the Liberals shifting from a regionally concentrated party to a more dispersed party has hurt their election outcomes substantially. I was successful in replicating their results, though I used software called OpenBUGS to run Monte Carlo sampling and Calvo and Rodden used WinBUGS. I extended this project by using their model to examine election results in India. India, the world's largest democracy, has many small parties concentrated in two national alliances, the INC and the BJP. Unlike the UK, where 3 parties divide the vote, only 2 do so in India. My results demonstrate....^[All analysis for this paper is available [here.](https://github.com/rmckenzie11/Replication_1006)]
+
+# Literature Review
+
+In the 1970s, quantitative social science was still in its infancy. Some of the earliest innovators were Graham Gudgin and Peter Taylor, who focused their attention on how votes translated into seats. Earlier work by Kendall and Stuart (1950) had identified a "law of cubic proportions", which modeled the relationship between votes and seats:
+$$\frac{S_1}{S_2} = (\frac{V_1}{V_2})^3$$, where $S_1/S_2$ is the # of seats won by party 1 divided by the # of seats won by party 2, and $V_1/V_2$ is the # of votes won by party 1 divided by the # of votes won by party 2. While the "cubic law" was rapidly accepted by political scientists, a series of election results and further papers began to chip away at the theory. Gudgin and Taylor built a new model to determine the linkage between votes and seats using the combination of two maps: the spatial distribution of support across a country and electoral districts. Their theoretical model relied on a host of assumptions, but was successful in determining which components of geographic distribution had the most impact on election outcomes. Calvo and Rodden have extended and rebuilt Gudgin and Taylor's model using modern techniques to eleminate some of these assumptions and make results more applicable.  
+

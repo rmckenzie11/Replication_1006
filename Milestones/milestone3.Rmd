@@ -1,0 +1,14 @@
+---
+title: "milestone3"
+author: "Robert McKenzie"
+date: "2/21/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+I'm going to try and replicate a paper called "The Achilles Heel of Plurality Systems: Geography and Representation in Multi-Party Democracies" by Jonathan Rodden and Ernesto Calvin. Their paper, which was published in 2014 in the American Journal of Political Science. The key point of their argument is that while predicting the correlations between votes and seats is very easy in two-party systems, the introduction of a third party can drastically complicate the transformation of votes to seats. To demonstrate this, they built a model that links parties' changing geographical support with the expected number of seats. Their key findings from their model, which they built using both simulated votes and actual electoral results from UK elections over the last 50 years, shows three things: "a correlation exists between the number of parties and majoritarian biases, that majoritarian systems will benefit small parties when their vote is more concentrated than average and penalize them when their vote is more dispersed than average, and that majoritarian systems will penalize larger parties when their votes are more concentrated than average and reward them when their vote is more dispersed."
+
+My repo is available at: https://github.com/rmckenzie11/Replication_1006
